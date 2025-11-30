@@ -1,11 +1,10 @@
-function Copyright({ name }) {
+export default  function Copyright() {
   const year = new Date().getFullYear();
 
   return (
-    <p style={{ textAlign: "center", marginTop: "20px", color: "#555" }}>
-      © {year} {name}. Todos los derechos reservados.
+    <p>
+      © {year} Maria Isabel Nuñez López. Todos los derechos reservados.
     </p>
   );
 }
 
-export default Copyright;

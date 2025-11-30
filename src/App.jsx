@@ -1,18 +1,18 @@
-import Header from './components/Header'
-import ContactList from './components/ContactList'
-import Footer from './components/footer'
+import Header from "./components/Header";
+import ContactList from "./components/ContactList";
+import Footer from "./components/footer";
 
 function App() {
 
   return (
-    <div>
-      {/* Aquí renderiza los componentes */}
+   <div>
       <Header/>
       <main>
       <ContactList/>
       <Footer/>
       </main>
-    </div>
+   </div>
+    
   )
 }
 

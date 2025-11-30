@@ -12,17 +12,20 @@ body {
   font-family: Arial, sans-serif;
   background: var(--bg);
   color: var(--text);
+  display: flex;
+  justify-content: center;
 }
 
 header {
-  padding: 20px;
+  padding: 10px;
+  width: 100vw;
   text-align: center;
   background-color: var(--primary);
   color: white;
 }
 
 footer {
-  padding: 20px;
+  padding: 10px;
   text-align: center;
   background: var(--secondary);
   color: white;

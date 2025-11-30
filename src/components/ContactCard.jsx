@@ -1,12 +1,10 @@
 
-function ContactCard() {
-
+export default function ContactCard(props) {
   return (
     <div className="contact-card">
-      <h3>Mi Primer Contacto</h3>
-      <p>📱 Teléfono: 555-1234</p>
-      <p>✉️ Email: contacto@email.com</p>
+      <h3>Contacto: {props.name} {props.lastName}</h3>
+      <p>📱 Teléfono: {props.telefono}</p>
+      <p>✉️ Email: {props.email}</p>
     </div>
   );
-}
-export default ContactCard;
+};
