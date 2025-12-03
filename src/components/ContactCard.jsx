@@ -1,10 +1,10 @@
 
-export default function ContactCard(props) {
+export default function ContactCard({name, phone,isFavorite}) {
   return (
-    <div className="contact-card">
-      <h3>Contacto: {props.name} {props.lastName}</h3>
-      <p>📱 Teléfono: {props.telefono}</p>
-      <p>✉️ Email: {props.email}</p>
+    <div>
+      <h3>Contacto: {name}</h3>
+      <p>📱 Teléfono: {phone}</p>
+      <p>⭐ Favorito: {isFavorite? "Sí":"No"}</p>
     </div>
   );
 };

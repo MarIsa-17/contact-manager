@@ -1,11 +1,30 @@
-import ContactCard from "./ContactCard"
+import ContactCard from "./ContactCard";
 
-export default function ContactList() {
+export default function ContactList({
+  contacts,
+  onDeleteContact,
+  onToggleFavorite,
+}) {
+  if (!contacts || contacts.length === 0) {
+    return <p>No hay contactos</p>;
+  }
+
   return (
     <div>
-      <ContactCard name= "Renato" lastName="Pintado" telefono={982082770} email ="renato10@gmail.com"/>
-      <ContactCard name= "Aria" lastName="Nuñez" telefono={99582152} email ="arita03@gmail.com"/>
-      <ContactCard name= "Cynthia" lastName="Lopez" telefono={959245125} email ="nlcynthia@gmail.com"/>
+      <h3 style={{textAlign:"center"}}>Mis Contactos</h3>
+      {contacts.map((contact) => (
+        <div className="contact-card" key={contact.id}>
+          <ContactCard key={contact.id} {...contact} />
+          <div className="botones-card">
+            <button className="eliminar" type="button" onClick={() => onDeleteContact(contact.id)}>
+              Eliminar
+            </button>
+            <button className="favorito" onClick={() => onToggleFavorite(contact.id)}>
+              {contact.isFavorite ? "Quitar Favorito" : "Marcar Favorito"}
+            </button>
+          </div>
+        </div>
+      ))}
     </div>
-  )
+  );
 }
