@@ -1,7 +1,10 @@
+import { Routes, Route } from "react-router-dom";
 import { useState } from "react";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
 import Header from "./components/Header";
-import ContactList from "./components/ContactList";
-import Footer from "./components/footer";
+import Footer from "./components/Footer";
+import ContactDetailPage from "./pages/ContactDetailPage"; 
 
 function App() {
   const [contacts, setContacts] = useState([
@@ -9,61 +12,23 @@ function App() {
     { id: 2, name: "Cynthia López", phone: "555-5678", isFavorite: false },
     { id: 3, name: "María Villalobos", phone: "555-9012", isFavorite: true },
   ]);
+ 
 
-  const contactFavorite = contacts.filter((c) => c.isFavorite);
-
-  function handleAddContact() {
-    const newContact = {
-      id: Date.now(), // ID único temporal
-      name: `Contacto ${contacts.length + 1}`,
-      phone: "000-0000",
-      isFavorite: false,
-    };
-    setContacts([...contacts, newContact]);
-  }
-
-  function handleDeleteContact(contactId) {
-    if (window.confirm("¿Estás seguro de eliminar este contacto?")) {
-      const updatedContacts = contacts.filter(
-        (contact) => contact.id !== contactId
-      );
-      setContacts(updatedContacts);
-    }
-  }
-  function toggleFavorite(contactId) {
-    setContacts(
-      contacts.map((contact) =>
-        contact.id === contactId
-          ? { ...contact, isFavorite: !contact.isFavorite }
-          : contact
-      )
-    );
-  }
-
-  function deleteAll() {
-    if (window.confirm("¿Estás seguro de eliminar todos los contactos?")) {
-      setContacts([]);
-    }
-  }
 
   return (
-    <div>
-      <Header />
-      <div className="info-contactos">
-        <p>Total: {contacts.length} contactos</p>
-        <p>Contactos favoritos: {contactFavorite.length}</p>
-        <button className="agregar" onClick={handleAddContact}>Agregar Contacto</button>
-      </div>
-      <ContactList
-        contacts={contacts}
-        onDeleteContact={handleDeleteContact}
-        onToggleFavorite={toggleFavorite}
-      />
-      <div className="contenedor-limpiar">
-        <button className="limpiar" onClick={deleteAll}>LIMPIAR TODO</button>
-      </div>      
-      <Footer />
+    <>
+    <Header/>
+    <div className="py-20 px-4 max-w-3xl mx-auto w-full">
+
+      <Routes>
+        <Route path="/" element={<HomePage contacts={contacts} setContacts={setContacts}/>} /> 
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact/:id" element={<ContactDetailPage contacts={contacts}/>} /> 
+
+      </Routes>
     </div>
+    <Footer/>
+    </>
   );
 }
 
