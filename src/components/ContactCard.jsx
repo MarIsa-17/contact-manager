@@ -1,13 +1,22 @@
-import { Link } from "react-router-dom";  
+import { Link } from "react-router-dom";
 
-export default function ContactCard({id,name, phone,isFavorite}) {
+export default function ContactCard({
+  id,
+  fullname,
+  phonenumber,
+  isFavorite,
+  email,
+}) {
   return (
-   <Link to={`/contact/${id}`} style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
-     <div >
-      <h3>Contacto: {name}</h3>
-      <p>📱 Teléfono: {phone}</p>
-      <p>⭐ Favorito: {isFavorite? "Sí":"No"}</p>
-    </div>
+    <Link to={`/contact/${id}`}>
+      <div>
+        <h3 className="font-bold text-lg mb-2 text-blue-900/90">{fullname}</h3>
+        <div className="text-sm text-gray-700">
+          <p>📱 Teléfono: {phonenumber}</p>
+          <p>⭐ Favorito: {isFavorite ? "Sí" : "No"}</p>
+          <p>✉️ email:{email} </p>
+        </div>
+      </div>
     </Link>
   );
 }

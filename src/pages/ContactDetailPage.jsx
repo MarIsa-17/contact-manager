@@ -16,31 +16,33 @@ export default function ContactDetailPage({ contacts }) {
     return (
       <div className="pt-12 px-6">
         <h2 className="mb-5">Contacto no encontrado</h2>
-        <Link to="/" className="p-2 text-sm border-2 border-indigo-400/30 rounded cursor-pointer bg-indigo-100 hover:bg-indigo-300">← Volver</Link>
+        <Link to="/" className="p-2 text-sm border-2 border-emerald-400/30 rounded cursor-pointer bg-emerald-100/50 hover:bg-emerald-300">← Volver</Link>
       </div>
     );
   }
   return (
     <div className="pt-12 px-6">
-      <Link to="/" className="p-2 text-sm border-2 border-indigo-400/30 rounded cursor-pointer bg-indigo-100 hover:bg-indigo-300">
+      <Link to="/" className="p-2 text-sm border-2 border-emerald-400/30 rounded cursor-pointer bg-emerald-100/50 hover:bg-emerald-300">
         ← Volver
       </Link>
-      <h1 className="text-3xl font-bold mt-4">{contact.name}</h1>
-      <p className="text-lg">📞 {contact.phone}</p>
+      <div className="mt-6 text-white bg-white/10 p-6 rounded-lg shadow-md max-w-sm">
+      <h1 className="text-3xl font-bold">{contact.fullname}</h1>
+      <p className="text-lg">📞 {contact.phonenumber}</p>
       <p className="text-lg">⭐ Favorito: {contact.isFavorite ? "Sí" : "No"}</p>
+      </div>
      
       <div style={{ marginTop: "30px", display: "flex", gap: "15px" }}>
         <button
           onClick={() => navigate(`/contact/${previousContact.id}`)}
           disabled={!previousContact}
-          className="p-2 border border-indigo-300 rounded cursor-pointer text-sm bg-indigo-100 hover:bg-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 border border-emerald-300 rounded cursor-pointer text-sm bg-emerald-100/20 hover:bg-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           ← Anterior
         </button>
         <button
           onClick={() => navigate(`/contact/${nextContact.id}`)}
           disabled={!nextContact}
-          className="p-2 border border-indigo-300 rounded cursor-pointer text-sm bg-indigo-100 hover:bg-indigo-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 border border-emerald-300 rounded cursor-pointer text-sm bg-emerald-100/20 hover:bg-emerald-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Siguiente →
         </button>

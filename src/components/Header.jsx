@@ -2,21 +2,21 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   return (
-    <header className="p-4 bg-blue-200 fixed top-0 left-0 right-0 shadow-md z-10">
+    <header className="p-2 bg-emerald-900/20 shadow-md z-10">
       <nav>
         <ul className="flex flex-row gap-4 justify-end">
           <li>
-            <Link to="/" style={{ textDecoration: "none", color: "#333" }}>
+            <Link to="/" className="text-shadow-white">
               🏠 Home
             </Link>
           </li>
           <li>
-            <Link to="/about" style={{ textDecoration: "none", color: "#333" }}>
+            <Link to="/about" className="text-shadow-white">
               ℹ️ About
             </Link>
           </li>
           <li>
-            <Link to= "/contact/:id" style={{ textDecoration: "none", color: "#333" }}>
+            <Link to= "/contact/:id" className="text-shadow-white">
               📋 Contact List
             </Link>
           </li>
