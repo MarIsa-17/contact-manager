@@ -1,65 +1,51 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-
 # Contact Manager
 
-Gestor de contactos hecho en React + Vite. Permite agregar, eliminar y marcar contactos como favoritos.
+Gestor de contactos hecho con **React**, **Vite** y **TailwindCSS**.
 
 ## Características
 
-- Listado de contactos con nombre y teléfono
-- Agregar nuevos contactos
-- Eliminar contactos individuales o todos
-- Marcar/desmarcar contactos como favoritos
-- Estilos personalizados y soporte para TailwindCSS y Flowbite
+- Listado de contactos con nombre y teléfono.
+- Agregar, eliminar y marcar contactos como favoritos.
+- Eliminar todos los contactos con un solo clic.
+- Navegación entre páginas con React Router.
+- Detalle de contacto con navegación "anterior/siguiente".
+- Estilos modernos y responsivos usando TailwindCSS.
 
 ## Instalación
 
 1. Clona el repositorio:
-   ```
+   ```bash
    git clone https://github.com/MarIsa-17/contact-manager.git
    cd contact-manager
    ```
 
 2. Instala las dependencias:
-   ```
+   ```bash
    npm install
    ```
 
 3. Inicia el proyecto en modo desarrollo:
-   ```
+   ```bash
    npm run dev
    ```
 
 ## Estructura del proyecto
 
-- `src/components`: Componentes React (ContactList, ContactCard, etc.)
-- `src/index.css`: Estilos globales y directivas de Tailwind
-- `App.jsx`: Componente principal
+- `src/components/`: Componentes reutilizables (ContactList, ContactCard, Header, Footer, etc.)
+- `src/pages/`: Páginas principales (HomePage, AboutPage, ContactDetailPage)
+- `src/index.css`: Estilos globales y directivas de TailwindCSS
+- `App.jsx`: Componente principal y rutas
 - `public/`: Archivos estáticos
 
 ## Personalización
 
-- Modifica los componentes en `src/components` para agregar más campos o funcionalidades.
+- Modifica los componentes en `src/components/` para agregar más campos o funcionalidades.
 - Cambia los estilos usando clases de TailwindCSS en los archivos `.jsx`.
+- Puedes ajustar la cuadrícula de las tarjetas de contacto modificando las clases Tailwind en `ContactList.jsx`.
 
-## Licencia
+## Tecnologías usadas
 
-Este proyecto está bajo la licencia ISC.
-
----
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [React Router](https://reactrouter.com/)

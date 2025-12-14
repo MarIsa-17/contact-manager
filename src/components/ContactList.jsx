@@ -18,14 +18,16 @@ export default function ContactList({
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 ">
       {contacts && contacts.length >0 && contacts.map((contact) => (
         <div
           key={contact.id}
-          className="flex justify-evenly gap-5 items-center border-2 border-emerald-300 bg-white/50 m-4 p-3 rounded-lg max-w-full mx-auto"
+          className="flex flex-col h-full justify-evenly items-center border-2 border-emerald-300 bg-white/50 m-4 p-3 rounded-lg max-w-full mx-auto"
         >
+          <div className="grow w-full mb-3">
           <ContactCard key={contact.id} id={contact.id} {...contact} />
-          <div className="flex flex-col gap-2">
+          </div>
+          <div className="flex flex-col gap-2 self-end">
             <button
               className="py-1 border rounded cursor-pointer text-xs bg-emerald-100/50 hover:bg-emerald-300/60"
               type="button"

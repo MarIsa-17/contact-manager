@@ -5,7 +5,7 @@ import AboutPage from "./pages/AboutPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ContactDetailPage from "./pages/ContactDetailPage";
-
+// import { fetchContacts } from "../services/contacts";
 const API_URL = import.meta.env.VITE_API_URL;
 
 function App() {
@@ -13,17 +13,16 @@ function App() {
   const [contacts, setContacts] = useState([]); // estado para almacenar contactos
 
   useEffect(() => {
-    async function fetchContacts() {
-      try {
-        const response = await fetch(`${API_URL}`);
-        const data = await response.json();
-        setContacts(data);
-      } catch (error) {
-        console.error("Error fetching contacts:", error);
-      }
-    }
-    fetchContacts();
-  }, []);
+async function fectchContacts(){
+  try {
+    const response = await fetch(`${API_URL}`);
+    const data = await response.json();
+    setContacts(data);
+  } catch (error) {
+    console.error("Error fetching contacts:", error);
+  }   
+} fectchContacts();
+  }, []); // se ejecuta una vez al montar el componente 
 
   return (
     <>
