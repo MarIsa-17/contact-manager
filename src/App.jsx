@@ -1,28 +1,38 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ContactDetailPage from "./pages/ContactDetailPage";
-// import { fetchContacts } from "../services/contacts";
-const API_URL = import.meta.env.VITE_API_URL;
+import { fetchContacts } from "./services/contacts";
 
 function App() {
-
+  const [loading, setLoading] = useState(false); // estado de carga
   const [contacts, setContacts] = useState([]); // estado para almacenar contactos
 
   useEffect(() => {
-async function fectchContacts(){
-  try {
-    const response = await fetch(`${API_URL}`);
-    const data = await response.json();
-    setContacts(data);
-  } catch (error) {
-    console.error("Error fetching contacts:", error);
-  }   
-} fectchContacts();
-  }, []); // se ejecuta una vez al montar el componente 
+    setLoading(true);
+    async function loadContacts() {
+      const data = await fetchContacts();
+      setContacts(data);
+      setLoading(false);
+    }
+    loadContacts();
+  }, []);
+
+  if (loading) {
+    // solución al mensaje de carga hasta que haga el fetch
+    return (
+      <>
+        <Header />
+        <div className="flex justify-center items-center min-h-screen">
+          <span className="text-white text-xl">Cargando contactos...</span>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -41,6 +51,7 @@ async function fectchContacts(){
           />
         </Routes>
       </div>
+      <div></div>
       <Footer />
     </>
   );

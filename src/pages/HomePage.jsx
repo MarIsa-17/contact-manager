@@ -51,11 +51,6 @@ export default function HomePage({ contacts, setContacts }) {
       <h2 className="text-3xl text-white uppercase font-bold text-center">
         📞 Mis Contactos{" "}
       </h2>
-      <ContactList
-        contacts={contacts}
-        onDeleteContact={handleDeleteContact}
-        onToggleFavorite={toggleFavorite}
-      />
       <div className="mt-3 font-normal flex row-auto gap-5 justify-center">
         <p className="bg-blue-400/50 text-white p-2 rounded-lg">
           Total: {contactCount} contactos
@@ -64,6 +59,11 @@ export default function HomePage({ contacts, setContacts }) {
           Favoritos: {contactFavoriteCount}
         </p>
       </div>
+      <ContactList
+        contacts={contacts}
+        onDeleteContact={handleDeleteContact}
+        onToggleFavorite={toggleFavorite}
+      />
       <div className="mt-7 flex justify-end">
         <button
           onClick={deleteAll}
