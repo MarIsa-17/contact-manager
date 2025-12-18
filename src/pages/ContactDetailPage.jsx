@@ -1,7 +1,10 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useContacts } from "../context/ContactContext";
 
-export default function ContactDetailPage({ contacts }) {
+export default function ContactDetailPage() {
+  
   const { id } = useParams();
+  const {contacts} = useContacts();
   const navigate = useNavigate();
   const currentId = Number(id);
 
