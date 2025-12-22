@@ -11,18 +11,13 @@ export default function Header() {
             </Link>
           </li>
           <li>
+            <Link to="/formulario" className="text-white">
+              📄 Formulario
+            </Link>
+          </li>
+          <li>
             <Link to="/about" className="text-white">
               ℹ️ About
-            </Link>
-          </li>
-          <li>
-            <Link to="/formulario" className="text-white">
-              ℹ️ Formulario
-            </Link>
-          </li>
-          <li>
-            <Link to="/contact/:id" className="text-white">
-              📋 Contact List
             </Link>
           </li>
         </ul>

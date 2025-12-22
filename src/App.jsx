@@ -5,7 +5,8 @@ import AboutPage from "./pages/AboutPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ContactDetailPage from "./pages/ContactDetailPage";
-import TestPage from "./pages/test-page";
+import ContactForm from "./pages/ContactForm";
+
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
-          <Route path="/formulario" element={<TestPage />} />
+          <Route path="/formulario" element={<ContactForm/>} />
           <Route
             path="/contact/:id"
             element={<ContactDetailPage />}

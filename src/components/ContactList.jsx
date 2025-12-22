@@ -1,22 +1,12 @@
-import { useState} from "react";
+import { useState } from "react";
 import { useContacts } from "../context/ContactContext";
 import ContactCard from "./ContactCard";
 
-export default function ContactList() {
-const { contacts, setContacts, isLoading,error, loadContacts } = useContacts();
+export default function ContactList({onEditContact}) {
+  const { contacts, setContacts, isLoading, error, loadContacts } =
+    useContacts();
   const [searchTerm, setSearchTerm] = useState("");
-  
 
-
-  function handleAddContact() {
-    const newContact = {
-      id: Date.now(), // ID único temporal
-      fullname: `Contacto ${contacts.length + 1}`,
-      phonenumber: "000-0000",
-      isFavorite: false,
-    };
-    setContacts([...contacts, newContact]);
-  }
 
   function handleDeleteContact(contactId) {
     setContacts(contacts.filter((contact) => contact.id !== contactId));
@@ -59,16 +49,10 @@ const { contacts, setContacts, isLoading,error, loadContacts } = useContacts();
         <div className="flex gap-2">
           <button
             className="px-3 py-1 text-xs border-2 border-white/20 rounded-lg text-white hover:bg-blue-500/50 transition-colors"
-            onClick={()=>loadContacts()}
+            onClick={() => loadContacts()}
             disabled={isLoading}
           >
             {isLoading ? "⏳ Cargando..." : "🔄 Actualizar"}
-          </button>
-          <button
-            className="px-3 py-1 text-xs border-2 border-white/20 rounded-lg text-white hover:bg-emerald-500/50 transition-colors"
-            onClick={handleAddContact}
-          >
-            ➕ Agregar
           </button>
         </div>
       </div>
@@ -96,7 +80,7 @@ const { contacts, setContacts, isLoading,error, loadContacts } = useContacts();
           <p className="text-xl font-light">Sincronizando contactos...</p>
         </div>
       )}
-      
+
       {/* ESTADO: CARGANDO */}
       {isLoading && contacts.length === 0 && (
         <div className="text-center py-20 text-white animate-pulse">
@@ -109,7 +93,7 @@ const { contacts, setContacts, isLoading,error, loadContacts } = useContacts();
         <div className="bg-red-500/20 border border-red-500/50 p-6 rounded-2xl text-center text-white">
           <p className="mb-4">❌ {error}</p>
           <button
-            onClick={()=>loadContacts()}
+            onClick={() => loadContacts()}
             className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-bold transition-colors"
           >
             🔄 Reintentar conexión
@@ -154,6 +138,15 @@ const { contacts, setContacts, isLoading,error, loadContacts } = useContacts();
                       }`}
                     >
                       {contact.isFavorite ? "⭐ Quitar" : "☆ Favorito"}
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEditContact(contact); // Nueva prop 
+                      }}
+                      className="px-3 py-1.5 rounded-lg text-xs bg-blue-500/10 text-blue-400 border border-blue-500/20 hover:bg-blue-500/30 transition-colors"
+                    >
+                      ✏️
                     </button>
                     <button
                       onClick={(e) =>

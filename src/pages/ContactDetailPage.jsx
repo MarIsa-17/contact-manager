@@ -2,9 +2,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useContacts } from "../context/ContactContext";
 
 export default function ContactDetailPage() {
-  
   const { id } = useParams();
-  const {contacts} = useContacts();
+  const { contacts } = useContacts();
   const navigate = useNavigate();
   const currentId = Number(id);
 
@@ -19,21 +18,37 @@ export default function ContactDetailPage() {
     return (
       <div className="pt-12 px-6">
         <h2 className="mb-5">Contacto no encontrado</h2>
-        <Link to="/" className="p-2 text-sm border-2 border-emerald-400/30 rounded cursor-pointer bg-emerald-100/50 hover:bg-emerald-300">← Volver</Link>
+        <Link
+          to="/"
+          className="p-2 text-sm border-2 border-emerald-400/30 rounded cursor-pointer bg-emerald-100/50 hover:bg-emerald-300"
+        >
+          ← Volver
+        </Link>
       </div>
     );
   }
   return (
     <div className="pt-12 px-6">
-      <Link to="/" className="p-2 text-sm border-2 border-emerald-400/30 rounded cursor-pointer bg-emerald-100/50 hover:bg-emerald-300">
+      <Link
+        to="/"
+        className="p-2 text-sm border-2 border-emerald-400/30 rounded cursor-pointer bg-emerald-100/50 hover:bg-emerald-300"
+      >
         ← Volver
       </Link>
-      <div className="mt-6 text-white bg-white/10 p-6 rounded-lg shadow-md max-w-sm">
-      <h1 className="text-3xl font-bold">{contact.fullname}</h1>
-      <p className="text-lg">📞 {contact.phonenumber}</p>
-      <p className="text-lg">⭐ Favorito: {contact.isFavorite ? "Sí" : "No"}</p>
+      <div className="my-6">
+        <h1 className="text-black/50 font-bold text-3xl ">Detalles del Contacto</h1>
       </div>
-     
+      <div className="text-white bg-white/10 p-6 rounded-lg shadow-md max-w-sm">
+        <h2 className="text-2xl mb-2 font-bold">{contact.fullname}</h2>
+        <p className="text-lg">📞 {contact.phonenumber}</p>
+        <p className="text-lg">✉️ {contact.email}</p>
+        <p className="text-lg">📝 {contact.type}</p>
+        <p className="text-lg">
+          ⭐ Favorito: {contact.isFavorite ? "Sí" : "No"}
+        </p>
+
+      </div>
+
       <div style={{ marginTop: "30px", display: "flex", gap: "15px" }}>
         <button
           onClick={() => navigate(`/contact/${previousContact.id}`)}

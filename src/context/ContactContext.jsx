@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useContext } from "react";
 import { fetchContacts, getErrorMessage } from "../services/contactService";
 
 const ContactContext = createContext();
@@ -6,20 +6,17 @@ const ContactContext = createContext();
 export function ContactProvider({ children }) {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null); // - El error ahora es global
+  const [error, setError] = useState(null);
 
   const loadContacts = async (isSilent = false) => {
     if (!isSilent) setIsLoading(true);
-    setError(null); // - Limpiamos error previo
-
+    setError(null);
     try {
       const data = await fetchContacts();
       setContacts(data);
     } catch (err) {
-      // Usamos tu utilidad de service para el mensaje
       const msg = getErrorMessage(err);
       if (!isSilent) setError(msg);
-      console.error("Error en carga:", err);
     } finally {
       if (!isSilent) setIsLoading(false);
     }
@@ -27,16 +24,23 @@ export function ContactProvider({ children }) {
 
   useEffect(() => {
     loadContacts();
-    // Tu lógica de auto-refresco se queda aquí para ser global
-    const intervalId = setInterval(() => loadContacts(true), 30000);
+    const intervalId = setInterval(() => loadContacts(true), 100000);
     return () => clearInterval(intervalId);
   }, []);
 
   return (
-    <ContactContext.Provider value={{ contacts, setContacts, isLoading, error, loadContacts }}>
+    <ContactContext.Provider
+      value={{ contacts, setContacts, isLoading, error, loadContacts }}
+    >
       {children}
     </ContactContext.Provider>
   );
 }
 
-export const useContacts = () => useContext(ContactContext);
+export const useContacts = () => {
+  const context = useContext(ContactContext);
+  if (!context) {
+    throw new Error("useContacts debe usarse dentro de un ContactProvider");
+  }
+  return context;
+};
