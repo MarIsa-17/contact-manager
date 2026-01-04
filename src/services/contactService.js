@@ -73,30 +73,37 @@ export async function createContact(data) {
 }
 
 export async function updateContact(id, contactData) {
-  if (!id || isNaN(id)) {
-    throw new Error("ID inválido para actualización");
+  // Entermocks usa PATCH según tu captura de pantalla
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "PATCH", 
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      // Si la API requiere algún token, agrégalo aquí
+    },
+    body: JSON.stringify(contactData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || "Error al actualizar el contacto");
   }
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(contactData),
-    });
 
-    if (!response.ok) {
-      throw new Error(
-        `Error al actualizar: ${response.status} ${response.statusText}`
-      );
-    }
-
-    const updatedContact = await response.json();
-    console.log("✅ Contacto actualizado:", updatedContact);
-
-    return updatedContact;
-  } catch (error) {
-    console.error("❌ Error al actualizar contacto:", error.message);
-    throw error;
-  }
+  return await response.json();
 }
+  
+
+
+export async function deleteContact(id) {
+  console.log(`🗑️ Iniciando eliminación del contacto con ID: ${id}`)  
+  
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  })
+  if (!response.ok) {
+    throw new Error(`Error al eliminar contacto: ${response.status}`);
+  }
+
+  console.log(`✅ Contacto con ID ${id} eliminado exitosamente.`);
+  return true;
+} 

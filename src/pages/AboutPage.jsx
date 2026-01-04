@@ -10,7 +10,7 @@ export default function AboutPage() {
         Contact Manager v1.0 - Módulo 1 Code 301, creada con React y Vite.
       </p>
       <p className="mt-4 text-light">
-        Permite agregar, eliminar y marcar contactos como favoritos.
+        Permite agregar, editar, eliminar y marcar contactos como favoritos.
       </p>
       <div>
         <Link

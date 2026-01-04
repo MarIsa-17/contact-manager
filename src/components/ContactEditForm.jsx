@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { updateContact } from "../services/contactService";
+import { validateField } from "./lib/utils";
 
 export default function ContactEditForm({
   contact,
@@ -7,71 +8,78 @@ export default function ContactEditForm({
   onCancel,
 }) {
   const [formData, setFormData] = useState({
-    fullname: "",
-    phonenumber: "",
-    email: "",
-    type: "",
-    isFavorite: false,
+    fullname: contact?.fullname || "",
+    phonenumber: contact?.phonenumber || "",
+    email: contact?.email || "",
+    type: contact?.type || "Personal",
+  });
+
+  const [touched, setTouched] = useState({
+    fullname: false,
+    phonenumber: false,
+    email: false,
   });
 
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(null);
+  const [serverError, setServerError] = useState(null);
 
-  useEffect(() => {
-    if (contact) {
-      setFormData({
-        fullname: contact.fullname || "",
-        phonenumber: contact.phonenumber || "",
-        email: contact.email || "",
-        type: contact.type || "",
-        isFavorite: contact.isFavorite || false,
-      });
-    }
-  }, [contact]);
+  // Validación derivada
+  const errors = {
+    fullname: validateField("fullname", formData.fullname),
+    phonenumber: validateField("phonenumber", formData.phonenumber),
+    email: validateField("email", formData.email),
+  };
 
+  const isFormValid = !errors.fullname && !errors.phonenumber && !errors.email;
+  //función para inputs con cambios
   function handleChange(e) {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }
-
+  // función para inputs desenfocados
+  function handleBlur(e) {
+    const { name } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+  }
+  // función para enviar formulario
   async function handleSubmit(e) {
     e.preventDefault();
+    if (!isFormValid) return;
+
     setIsSaving(true);
-    setError(null);
+    setServerError(null);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.fullname.trim().length < 2) {
-      setError("El nombre debe tener al menos 2 caracteres.");
-      setIsSaving(false);
-      return;
-    }
-    if (!formData.phonenumber.trim()) {
-      setError("El teléfono es obligatorio.");
-      setIsSaving(false);
-      return;
-    }
-    if (formData.email && !emailRegex.test(formData.email)) {
-      setError("Email inválido.");
-      setIsSaving(false);
-      return;
-    }
-
+    const dataToSend = {
+      fullname: formData.fullname.trim(),
+      phonenumber: formData.phonenumber.trim(),
+      email: formData.email.trim(),
+      type: formData.type,
+    };
+    console.log("URL DE PRUEBA:", `${import.meta.env.VITE_API_URL}/${contact.id}`);
 
     try {
- 
-      const updatedContact = await updateContact(contact.id, formData);
-      onContactUpdated?.(updatedContact);
+      console.log("petición a la API con ID:",contact.id);
+      await updateContact(contact.id, dataToSend);
+      onContactUpdated();
       alert("Contacto actualizado!");
+
     } catch (err) {
       console.log("Error datallado:", err);
-      setError(err.message);
-    } finally {
+      setServerError(err.message);
       setIsSaving(false);
     }
   }
+
+  //estilos para los inputs con error
+  const getFieldStyles = (name) => {
+    const base =
+      "w-full bg-white/10 border p-3 rounded-xl text-white outline-none transition-all";
+    if (!touched[name])
+      return `${base} border-white/10 focus:ring-2 focus:ring-blue-500`;
+    return errors[name]
+      ? `${base} border-red-500 bg-red-500/10`
+      : `${base} border-emerald-500 bg-emerald-500/10`;
+  };
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
@@ -79,12 +87,6 @@ export default function ContactEditForm({
         <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
           ✏️ Editar Contacto
         </h3>
-
-        {error && (
-          <div className="bg-red-500/20 border border-red-500/50 text-red-200 p-3 rounded-lg mb-4 text-sm">
-            ❌ {error}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
@@ -96,9 +98,14 @@ export default function ContactEditForm({
               type="text"
               value={formData.fullname}
               onChange={handleChange}
-              required
-              className="w-full bg-white/10 border border-white/10 p-3 rounded-xl text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              onBlur={handleBlur}
+              className={getFieldStyles("fullname")}
             />
+            {touched.fullname && errors.fullname && (
+              <p className="text-red-400 text-[10px] mt-1 ml-1">
+                {errors.fullname}
+              </p>
+            )}
           </div>
 
           <div>
@@ -110,27 +117,15 @@ export default function ContactEditForm({
               type="tel"
               value={formData.phonenumber}
               onChange={handleChange}
-              required
-              className="w-full bg-white/10 border border-white/10 p-3 rounded-xl text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              onBlur={handleBlur}
+              className={getFieldStyles("phonenumber")}
             />
+            {touched.phonenumber && errors.phonenumber && (
+              <p className="text-red-400 text-[10px] mt-1 ml-1">
+                {errors.phonenumber}
+              </p>
+            )}
           </div>
-          <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="w-full bg-white/10 border border-white/10 p-3 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option className="bg-slate-800" value="Personal">
-              Personal
-            </option>
-            <option className="bg-slate-800" value="Trabajo">
-              Trabajo
-            </option>
-            <option className="bg-slate-800" value="Familia">
-              Familia
-            </option>
-          </select>
-
           <div>
             <label className="text-xs text-white/50 uppercase font-bold ml-1">
               Email
@@ -140,33 +135,47 @@ export default function ContactEditForm({
               type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full bg-white/10 border border-white/10 p-3 rounded-xl text-white focus:ring-2 focus:ring-blue-500 outline-none"
+              onBlur={handleBlur}
+              className={getFieldStyles("email")}
             />
+            {touched.email && errors.email && (
+              <p className="text-red-400 text-[10px] mt-1 ml-1">
+                {errors.email}
+              </p>
+            )}
           </div>
-
-          <label className="flex items-center gap-2 text-white cursor-pointer hover:bg-white/5 p-2 rounded-lg transition-colors">
-            <input
-              name="isFavorite"
-              type="checkbox"
-              checked={formData.isFavorite}
+          <div>
+            <select
+              name="type"
+              value={formData.type}
               onChange={handleChange}
-              className="w-5 h-5 accent-amber-500"
-            />
-            <span>⭐ Marcar como favorito</span>
-          </label>
-
+              className="w-full bg-white/10 border border-white/10 p-3 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option className="bg-slate-800" value="Personal">
+                Personal
+              </option>
+              <option className="bg-slate-800" value="Trabajo">
+                Trabajo
+              </option>
+              <option className="bg-slate-800" value="Familia">
+                Familia
+              </option>
+            </select>
+          </div>
+          {serverError && (
+            <p className="text-red-400 text-center text-sm">{serverError}</p>
+          )}
           <div className="flex gap-3 mt-4">
             <button
               type="button"
               onClick={onCancel}
-              disabled={isSaving}
               className="flex-1 py-3 rounded-xl text-white/70 hover:bg-white/10 transition-colors font-medium"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              disabled={isSaving}
+              disabled={isSaving || !isFormValid}
               className="flex-1 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold transition-all disabled:opacity-50 shadow-lg shadow-blue-900/20"
             >
               {isSaving ? "⏳ Guardando..." : "💾 Guardar"}

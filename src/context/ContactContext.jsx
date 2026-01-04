@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from "react";
 import { fetchContacts, getErrorMessage } from "../services/contactService";
+import { getFavorites } from "../components/lib/utils";
 
 const ContactContext = createContext();
 
@@ -13,7 +14,14 @@ export function ContactProvider({ children }) {
     setError(null);
     try {
       const data = await fetchContacts();
-      setContacts(data);
+      const favoriteIds = getFavorites();// obtener favoritos de localStorage
+      // Marcar contactos como favoritos según los IDs almacenados
+      const hydratedContacts = data.map(contact => ({
+        ...contact,
+        isFavorite: favoriteIds.includes(contact.id),
+      }));
+
+      setContacts(hydratedContacts);
     } catch (err) {
       const msg = getErrorMessage(err);
       if (!isSilent) setError(msg);
